@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parooli Kontrollimine</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        #tekstikast {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        #kontrolli-nupp {
+            padding: 10px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #kontrolli-nupp:hover {
+            background-color: #45a049;
+        }
+
+        #teated {
+            margin-top: 10px;
+        }
+
+        .kollane { color: #ffbf00; }
+        .roheline { color: green; }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <p>Sinu ülesandeks on luua üks tugev, vähemalt 8 tähemärgist koosnev parool.</p>
+        <p>Palun ära kasuta ülesandes oma isiklikke paroole.</p>
+
+        <input type="password" id="tekstikast" placeholder="Sisesta tekst">
+        <button id="kontrolli-nupp" onclick="kontrolliTeksti()">Kontrolli</button>
+
+        <div id="teated"></div>
+
+        <script>
+            var vihjed = [
+                "Vaata, kas sinu paroolis on olemas vähemalt 1 suurtäht.",
+                "Vaata, kas sinu paroolis on olemas vähemalt 1 sümbol.",
+                "Vaata, kas sinu paroolis on olemas vähemalt 1 number.",
+                "Vaata, kas sinu paroolis on olemas vähemalt 1 väiketäht.",
+                "Vaata, kas sinu paroolis on vähemalt 8 tähemärki."
+            ];
+
+            var vihjeIndeks = 0;
+            var kõikVihjedKuvatud = false;
+
+            function kuvavihje(vihje) {
+                var teatedElement = document.getElementById("teated");
+                teatedElement.innerHTML += "<p class='kollane'>Vihje nr " + (vihjeIndeks + 1) + ": " + vihje + "</p>";
+
+                if (vihjeIndeks === 4) {
+                    kõikVihjedKuvatud = true;
+                }
+            }
+
+            function kuvaaRohelineTeade() {
+                var teatedElement = document.getElementById("teated");
+                teatedElement.innerHTML = "<p class='roheline'>Väga tubli! Sinu loodud parool on tugev! Jäta meelde number 5 ja liigu järgmise ülesande juurde.</p>";
+            }
+
+            function kontrolliTeksti() {
+                var tekst = document.getElementById("tekstikast").value;
+
+                if (reeglid.every(function(rule) { return rule(tekst); })) {
+                    kuvaaRohelineTeade();
+                    return;
+                }
+
+                if (vihjeIndeks < 5) {
+                    kuvavihje(vihjed[vihjeIndeks]);
+                    vihjeIndeks++;
+                }
+            }
+
+            var reeglid = [
+                function(s) { return s.length >= 8; },
+                function(s) { return /[A-Z]/.test(s); },
+                function(s) { return /\W/.test(s); },
+                function(s) { return /\d/.test(s); },
+                function(s) { return /[a-z]/.test(s); }
+            ];
+        </script>
+    </div>
+</body>
+</html>
